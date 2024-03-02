@@ -1,21 +1,31 @@
 package model.services;
 
 import model.entities.Contract;
+import model.entities.Installment;
+
+import java.time.LocalDate;
 
 public class ContractService {
     private OnlinePaymentService onlinePaymentService;
-    private Contract contract;
 
 
-    public ContractService(OnlinePaymentService onlinePaymentService, Contract contract) {
+
+    public ContractService(OnlinePaymentService onlinePaymentService) {
         this.onlinePaymentService = onlinePaymentService;
-        this.contract = contract;
+
     }
 
     public void processContract(Contract contract, int months){
-        double installment = contract.getTotalValue() / months;
 
-        onlinePaymentService.interest(installment, months);
+        double basicQuota = contract.getTotalValue() / months;
+
+        for (int i = 1 ; i <= months ; i++){
+            LocalDate dueDate = contract.getDateTime().plusMonths(i);
+            double interest = onlinePaymentService.interest(basicQuota, i);
+            double fee = onlinePaymentService.paymentFee(basicQuota + interest);
+            double quota = basicQuota + interest + fee;
+
+            contract.getInstallmentList().add(new Installment(dueDate, quota));
 
         }
 
@@ -24,3 +34,6 @@ public class ContractService {
 
 
 }
+
+
+

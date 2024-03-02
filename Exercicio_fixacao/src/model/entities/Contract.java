@@ -1,14 +1,19 @@
 package model.entities;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Contract {
     private Integer number;
-    private LocalDateTime dateTime;
+    private LocalDate dateTime;
     private Double totalValue;
+    private List<Installment> installmentList = new ArrayList<>();
 
     //============================ Constructors =================================================
-    public Contract(Integer number, LocalDateTime dateTime, Double totalValue) {
+
+    public Contract(Integer number, LocalDate dateTime, Double totalValue) {
         this.number = number;
         this.dateTime = dateTime;
         this.totalValue = totalValue;
@@ -28,11 +33,11 @@ public class Contract {
         this.number = number;
     }
 
-    public LocalDateTime getDateTime() {
+    public LocalDate getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(LocalDateTime dateTime) {
+    public void setDateTime(LocalDate dateTime) {
         this.dateTime = dateTime;
     }
 
@@ -43,5 +48,11 @@ public class Contract {
     public void setTotalValue(Double totalValue) {
         this.totalValue = totalValue;
     }
+
+    public List<Installment> getInstallmentList() {
+        return installmentList;
+    }
+
+
     //=========================================================================================
 }
